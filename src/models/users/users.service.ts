@@ -2,12 +2,16 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from 'src/dtos/create-user.dto';
 import { UpdateuserDto } from 'src/dtos/update-user.dto';
+import { QueueService } from 'src/providers/queue/lib/queue.service';
 import { User } from 'src/providers/typeorm/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>){}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly queueService: QueueService
+  ){}
 
   async createUser(data: CreateUserDto) {
     let user = await this.userRepository.findOne({
@@ -27,6 +31,13 @@ export class UsersService {
   }
 
   async getUsers() {
+    this.queueService.addJob({
+      task: "doSomething",
+      payload: {
+        user_id: "userid",
+        count: 2
+      }
+    })
     const users = await this.userRepository.find()
     return users;
   }
