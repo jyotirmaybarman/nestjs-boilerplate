@@ -25,14 +25,104 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository with -
-* Postgres DB
-* TypeORM
+
+- Postgres DB
+- TypeORM (structured migrations & entities [see usage](#typeorm-usage))
+- Queue (Custom queue implementation [see usage](#queue-usage))
 
 ## Installation
 
 ```bash
 $ npm install
 ```
+
+## Usage
+
+<div id="typeorm-usage">
+</div>
+
+#### TypeORM
+
+Define new entities here `src/providers/typeorm/entities` and generate a migration file with the following command -
+
+```bash
+npm run migration:generate --name=your_migration_file_name
+```
+
+It will generate a migration file in `src/providers/typeorm/migrations`
+
+You can deploy the migrations using -
+
+```bash
+npm run migration:deploy
+```
+
+OR undo the latest migration using -
+
+```bash
+npm run migration:undo
+```
+
+  <div id="queue-usage">
+
+  #### QUEUE
+  Add the type definition for the payload of the new job in  `src/providers/queue/payload-types`
+
+```ts
+// new-job.type.ts
+
+export type NewJobPayload = {
+  message: string;
+};
+```
+
+Add the new job to `src/providers/queue/queue.jobs.ts`
+
+```ts
+export class QueueJobs {
+  /** Other Code */
+
+  async newJob(payload: NewJobPayload): Promise<boolean> {
+    /** code related to processing of the job */
+    return true;
+  }
+
+  /** Other Code */
+}
+```
+
+Map the payload in `src/providers/queue/job-payload-type-mapper.ts` in the following format -
+
+`the_added_job_name_in_QueueJobs: payload_type`
+
+```ts
+export type JobPayloadTypeMapper = {
+  /** [job-name-from QueueJobs]: payload-type*/
+  newJob: NewJobPayload;
+};
+```
+
+Now, using QueueService, just add the job & processing will be handled automatically.
+
+```ts
+Class AnyService{
+  constructor(
+    private readonly queueService: QueueService
+  ){}
+
+  someMethod(){
+    this.queueService.addJob({
+      task: "newJob",
+      payload: {
+        message: "my-message"
+      }
+    })
+  }
+}
+
+```
+
+</div>
 
 ## Running the app
 
