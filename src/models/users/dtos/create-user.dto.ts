@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Matches } from "class-validator";
-import { SameAs } from "../common/decorators/same-as.decorator";
+import { SameAs } from "../../../common/decorators/same-as.decorator";
 
 export class CreateUserDto {
     @IsString()
