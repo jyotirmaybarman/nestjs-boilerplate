@@ -5,8 +5,6 @@ services:
       context: ./
       dockerfile: Dockerfile
       target: development
-    environment:
-      - PORT=${PORT}
     volumes:
       - ./:/app
     ports:
@@ -29,13 +27,15 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
     networks:
       - app-network
 
   redis:
     image: redis:7.2.4
     restart: always
+    ports:
+      - ${REDIS_PORT}:6379
     networks:
       - app-network
     volumes:
