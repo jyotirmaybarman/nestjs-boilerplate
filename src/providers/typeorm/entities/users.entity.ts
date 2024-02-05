@@ -9,7 +9,7 @@ export class User {
     @Column()
     first_name: string;
     
-    @Column()
+    @Column({ nullable: true })
     middle_name?: string;
     
     @Column()
