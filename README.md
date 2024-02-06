@@ -24,11 +24,15 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository with -
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository with configurations of the following -
 
 - Postgres DB
 - TypeORM (structured migrations & entities [see usage](#typeorm-usage))
 - Queue (Custom queue implementation [see usage](#queue-usage))
+- Caching
+- Swagger for documentation
+- Custom environment variables handling with multiple files & validation using Zod
+- Helmet to set security-related HTTP headers appropriately
 
 ## Installation
 
@@ -43,7 +47,7 @@ $ npm install
 
 #### TypeORM
 
-Define new entities here `src/providers/typeorm/entities` and generate a migration file with the following command -
+Define a new entity with the `.entity.ts` extension preferably in here `src/models/your-model/entities/name.entity.ts` or wherever you want, then generate a migration file with the following command -
 
 ```bash
 npm run migration:generate --name=your_migration_file_name
@@ -65,8 +69,9 @@ npm run migration:undo
 
   <div id="queue-usage">
 
-  #### QUEUE
-  Add the type definition for the payload of the new job in  `src/providers/queue/payload-types`
+#### QUEUE
+
+Add the type definition for the payload of the new job in `src/providers/queue/payload-types`
 
 ```ts
 // new-job.type.ts
