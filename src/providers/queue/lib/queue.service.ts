@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { QUEUES } from './queue.constants';
@@ -15,18 +15,19 @@ export type Job<T extends JobNames> = {
 
 @Injectable()
 export class QueueService {
+  logger = new Logger(QueueService.name);
   constructor(@InjectQueue(QUEUES.DEFAULT_QUEUE) private queue: Queue) {
     let count = 0;
     let interval = setInterval(()=>{
       if(queue.client.status != "ready" && count == 5){
-        console.log("QUEUE: unable to connect to redis");
+        this.logger.error("QUEUE: unable to connect to redis");
         clearInterval(interval);
       }
       else if(queue.client.status != "ready" && count < 5){
         count++;
       }
       else{
-        console.log("QUEUE: is ready");
+        this.logger.log("QUEUE: is ready");
         clearInterval(interval);
       }
     }, 1000)

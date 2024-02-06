@@ -13,6 +13,7 @@ import { env } from 'src/utils/env';
       redis: {
         host: env.REDIS_HOST,
         port: env.REDIS_PORT,
+        db: env.REDIS_QUEUE_DB,
         username: env.REDIS_USERNAME,
         password: env.REDIS_PASSWORD,
       },
