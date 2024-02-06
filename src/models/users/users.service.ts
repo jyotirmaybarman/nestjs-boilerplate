@@ -1,30 +1,35 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateuserDto } from './dtos/update-user.dto';
 import { QueueService } from 'src/providers/queue/lib/queue.service';
-import { User } from 'src/providers/typeorm/entities/users.entity';
+import { User } from 'src/models/users/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly queueService: QueueService
-  ){}
+    private readonly queueService: QueueService,
+  ) {}
 
   async createUser(data: CreateUserDto) {
     let user = await this.userRepository.findOne({
       where: {
-        email: data.email
-      }
+        email: data.email,
+      },
     });
 
-    if(user) throw new BadRequestException({
-      message: 'email address already exists'
-    })
+    if (user)
+      throw new BadRequestException({
+        message: 'email address already exists',
+      });
 
-    user = this.userRepository.create(data)
+    user = this.userRepository.create(data);
     await this.userRepository.save(user);
 
     return user;
@@ -32,31 +37,32 @@ export class UsersService {
 
   async getUsers() {
     this.queueService.addJob({
-      task: "doSomething",
+      task: 'doSomething',
       payload: {
-        user_id: "userid",
-        count: 2
-      }
-    })
-    const users = await this.userRepository.find()
+        user_id: 'userid',
+        count: 2,
+      },
+    });
+    const users = await this.userRepository.find();
     return users;
   }
 
   async updateUser(id: string, data: UpdateuserDto) {
     const user = await this.userRepository.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
 
-    if(!user) throw new NotFoundException({
-      message: 'user does not exist'
-    })
+    if (!user)
+      throw new NotFoundException({
+        message: 'user does not exist',
+      });
 
-    data.email ? user.email = data.email : null
-    data.first_name ? user.first_name = data.first_name : null
-    data.middle_name ? user.middle_name = data.middle_name : null
-    data.last_name ? user.last_name = data.last_name : null
+    data.email ? (user.email = data.email) : null;
+    data.first_name ? (user.first_name = data.first_name) : null;
+    data.middle_name ? (user.middle_name = data.middle_name) : null;
+    data.last_name ? (user.last_name = data.last_name) : null;
     this.userRepository.save(user);
 
     return user;
@@ -65,13 +71,14 @@ export class UsersService {
   async removeUser(id: string) {
     const user = await this.userRepository.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
 
-    if(!user) throw new NotFoundException({
-      message: 'user does not exist'
-    })
+    if (!user)
+      throw new NotFoundException({
+        message: 'user does not exist',
+      });
 
     this.userRepository.delete(user);
     return user;

@@ -10,8 +10,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { UpdateuserDto } from './dtos/update-user.dto';
-import { ApiResponse, ApiTags, OmitType } from '@nestjs/swagger';
-import { User } from 'src/providers/typeorm/entities/users.entity';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from 'src/models/users/entities/users.entity';
 
 @ApiTags('users')
 @Controller('users')

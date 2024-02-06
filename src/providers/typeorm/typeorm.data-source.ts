@@ -8,8 +8,8 @@ export const dataSourceOptions: DataSourceOptions = {
     database: env.DB_DATABASE,
     username: env.DB_USERNAME,
     password: env.DB_PASSWORD,
-    entities: ['dist/**/typeorm/entities/*.entity.js'],
-    migrations: ['dist/**/typeorm/migrations/*.js'],
+    entities: ['dist/**/*.entity.js'],
+    migrations: ['dist/**/migrations/*.js'],
     synchronize: false    
 }
 
