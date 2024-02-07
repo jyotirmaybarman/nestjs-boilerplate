@@ -33,6 +33,7 @@
 - Swagger for documentation
 - Custom environment variables handling with multiple files & validation using Zod
 - Helmet to set security-related HTTP headers appropriately
+- Logger using winston (console logs are nest like [see usage](#logger-usage))
 
 ## Installation
 
@@ -67,7 +68,7 @@ OR undo the latest migration using -
 npm run migration:undo
 ```
 
-  <div id="queue-usage">
+<div id="queue-usage"></div>
 
 #### QUEUE
 
@@ -127,7 +128,60 @@ Class AnyService{
 
 ```
 
-</div>
+
+<div id="logger-usage"></div>
+
+### LOGGER
+
+Crate new logger from the `WinstonLogger` class from `src/utils/winston-logger/winston-logger.ts`.
+
+Logs are saved in the `logs` folder in the root directory, by default it will keep logs upto 30 days.
+
+```ts
+class MyService{
+  private logger = new WinstonLogger(MyService.name) // sets up the context
+
+  foo(){
+    // use like this to pass additional data
+    this.logger.error({
+      message: "Unauthorized",
+      data: {
+        user: {
+          id: 1,
+          first_name: "Jyotirmay",
+          last_name: "Barman"
+        }
+      }
+    });
+    // OR just to pass the message
+    this.logger.error("Unauthorized");
+  }
+
+}
+
+```
+
+We have the following methods available in the WinstonLogger class - 
+
+```ts
+type LogPayload = string | {
+  message: string,
+  data?: any,
+  context?:string,
+  stack?: string,
+}
+
+fatal(payload: LogPayload, context?: string, stack?: string);
+error(payload: LogPayload, context?: string, stack?: string);
+log(payload: LogPayload, context?: string, stack?: string);
+warn(payload: LogPayload, context?: string, stack?: string);
+debug(payload: LogPayload, context?: string, stack?: string);
+verbose(payload: LogPayload, context?: string, stack?: string);
+setContext(ctx:string);
+getContext(): string;
+```
+
+`NOTE : We avoid using dependency injection for the logger because it disrupts the context when implemented` 
 
 ## Running the app
 
