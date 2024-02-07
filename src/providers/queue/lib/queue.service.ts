@@ -1,9 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { QUEUES } from './queue.constants';
 import { QueueJobs } from '../queue.jobs';
 import { JobPayloadTypeMapper } from '../job-payload-type-mapper';
+import { WinstonLogger } from 'src/utils/winston-logger/winston-logger';
 
 export type JobNames = keyof QueueJobs;
 type JobDto<T extends JobNames> = JobPayloadTypeMapper[T];
@@ -15,7 +16,7 @@ export type Job<T extends JobNames> = {
 
 @Injectable()
 export class QueueService {
-  logger = new Logger(QueueService.name);
+  private logger = new WinstonLogger(QueueService.name);
   constructor(@InjectQueue(QUEUES.DEFAULT_QUEUE) private queue: Queue) {
     let count = 0;
     let interval = setInterval(()=>{

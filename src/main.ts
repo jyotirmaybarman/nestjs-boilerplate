@@ -4,10 +4,11 @@ import { env } from './utils/env';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
+import { WinstonLogger } from './utils/winston-logger/winston-logger';
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: new WinstonLogger(), });
 
   app.use(helmet())
 
