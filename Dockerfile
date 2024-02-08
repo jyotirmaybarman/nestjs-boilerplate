@@ -22,4 +22,4 @@ RUN npm ci --omit=dev
 
 COPY --from=development /app/dist ./dist
 
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "start:prod"]
