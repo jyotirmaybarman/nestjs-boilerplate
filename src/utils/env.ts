@@ -16,7 +16,8 @@ const envSchema = z.object({
     REDIS_CACHE_DB: z.coerce.number().default(2),
     REDIS_USERNAME: z.string().optional(),
     REDIS_PASSWORD: z.string().optional(),
-    NODE_ENV: z.enum(["development", "production", "test"]).optional().default("development")
+    NODE_ENV: z.enum(["development", "production", "test"]).optional().default("development"),
+    JWKS_URI: z.string().optional()
 })
 
 export const env = envSchema.parse(process.env);

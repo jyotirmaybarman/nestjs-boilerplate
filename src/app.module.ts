@@ -6,6 +6,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { env } from './utils/env';
 import { RequestLoggerMiddleware } from './common/middlewares/request-logger.middleware';
+import { JwtModule } from '@nestjs/jwt';
+import { JwksModule } from './providers/jwks/jwks.module';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import { RequestLoggerMiddleware } from './common/middlewares/request-logger.mid
         }),
       }),
     }),
+    JwtModule.register({
+      global: true
+    }),
+    JwksModule,
   ],
 })
 export class AppModule {

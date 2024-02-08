@@ -34,6 +34,8 @@
 - Custom environment variables handling with multiple files & validation using Zod ( ie. simplified `Testing` )
 - Helmet to set security-related HTTP headers appropriately
 - Logger using winston (console logs are nest like [see usage](#logger-usage))
+- Auth Guard (Expects a Bearar token): By default the following token will work if you want to test the protected routes
+  `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzMTdmN2ZjLWVjYjQtNGEwOS04ZGFkLTZiMGZlMGZjM2VhMyIsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiZG9lIiwiZW1haWwiOiJqb2huQGRvZS5jb20iLCJpYXQiOjE3MDc0MTkwNzV9.PfUoWAPjFyA93GNaqAtys4x2wJgLd1sm89JvM3xlnt8`
 
 ## Installation
 
