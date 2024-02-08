@@ -87,7 +87,7 @@ export const getLogger = () =>{
             let logMs = gt(info.ms, secondary, bold)
             let obj = info.data ? inspect(info.data, { depth: null, colors: true }) : info.data
   
-            return appAndPid + logTimeStamp + logLevel +(logContext.length > 900 ? '\n': '')+ logContext + (logContext.length > 30 ? '\n\n': '') + logMessage + (showMs? logMs : '') + (obj ?  obj : '');
+            return appAndPid + logTimeStamp + logLevel +(logContext.length > 777 ? '\n': '') + logContext + (logMessage.length > 777 || logContext.length > 777 ? '\n': '') + logMessage + (showMs? logMs : '') + (obj ?  obj : '');
           }),
         ),
       }),
