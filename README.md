@@ -31,7 +31,7 @@
 - Queue (Custom queue implementation [see usage](#queue-usage))
 - Caching
 - Swagger for documentation
-- Custom environment variables handling with multiple files & validation using Zod
+- Custom environment variables handling with multiple files & validation using Zod ( ie. simplified `Testing` )
 - Helmet to set security-related HTTP headers appropriately
 - Logger using winston (console logs are nest like [see usage](#logger-usage))
 
