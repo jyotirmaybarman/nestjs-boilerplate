@@ -2,11 +2,11 @@ import { Injectable, LoggerService } from '@nestjs/common';
 import { getLogger } from './winston';
 
 export type LogPayload = string | {
-  message: string,
-  data?: any,
-  context?:string,
-  stack?: string,
-}
+  message: string;
+  data?: any;
+  stack?: string;
+  context?: string;
+};
 
 @Injectable()
 export class WinstonLogger implements LoggerService {
@@ -14,7 +14,7 @@ export class WinstonLogger implements LoggerService {
   private context: string;
 
   constructor(ctx?: string) {
-    ctx ? this.context = ctx : ''
+    if(ctx) this.context = ctx;
   }
 
   setContext(ctx: string) {
@@ -25,121 +25,104 @@ export class WinstonLogger implements LoggerService {
     return this.context;
   }
 
-  /**
-   * Write a 'log' level log.
-   */
-  log(payload: LogPayload, context?: string, stack?: string) {
-    let msg = payload, data:string;
-    if (typeof payload == 'object') {
-      msg = payload.message;
-      if(payload.data) data = payload.data;
-      if(payload.context) context = payload.context;
-      if(payload.stack) stack = payload.stack;
+  log(payload: LogPayload, context?:string) {
+    let message:any = payload, data:any, stack: string;
+    if(typeof payload == "object"){
+      context = payload.context ? payload.context : this.context;
+      stack = payload.stack ? payload.stack : stack;
+      message = payload.message && typeof payload.message == 'string' ? payload.message : 'Warning';
+      data = payload instanceof Error || !payload.message || typeof payload.message != 'string' ? payload : payload.data;
     }
-
+    
     this.wLogger.info({
       context: context ?? this.context,
-      message: msg,
+      message,
       data,
       stack,
     });
   }
-
-  /**
-   * Write a 'fatal' level log.
-   */
-  fatal(payload: LogPayload, context?: string, stack?: string) {
-    let msg = payload, data:string;
-    if (typeof payload == 'object') {
-      msg = payload.message;
-      if(payload.data) data = payload.data;
-      if(payload.context) context = payload.context;
-      if(payload.stack) stack = payload.stack;
+  
+  fatal(payload: LogPayload, context?:string) {
+    let message:any = payload, data:any, stack: string;
+    if(typeof payload == "object"){
+      context = payload.context ? payload.context : this.context;
+      stack = payload.stack ? payload.stack : stack;
+      message = payload.message && typeof payload.message == 'string' ? payload.message : 'Warning';
+      data = payload instanceof Error || !payload.message || typeof payload.message != 'string' ? payload : payload.data;
     }
-
-    this.wLogger.log('fatal', {
+    
+    this.wLogger.log({
+      level: "fatal",
       context: context ?? this.context,
-      message: msg,
+      message,
       data,
       stack,
     });
   }
-
-  /**
-   * Write an 'error' level log.
-   */
-  error(payload: LogPayload, context?: string, stack?: string) {
-    let msg = payload, data:string;
-    if (typeof payload == 'object') {
-      msg = payload.message;
-      if(payload.data) data = payload.data;
-      if(payload.context) context = payload.context;
-      if(payload.stack) stack = payload.stack;
+  
+  error(payload: LogPayload, context?:string) {
+    let message:any = payload, data:any, stack: string;
+    if(typeof payload == "object"){
+      context = payload.context ? payload.context : this.context;
+      stack = payload.stack ? payload.stack : stack;
+      message = payload.message && typeof payload.message == 'string' ? payload.message : 'Warning';
+      data = payload instanceof Error || !payload.message || typeof payload.message != 'string' ? payload : payload.data;
     }
-
+    
     this.wLogger.error({
       context: context ?? this.context,
-      message: msg,
+      message,
       data,
       stack,
     });
   }
 
-  /**
-   * Write a 'warn' level log.
-   */
-  warn(payload: LogPayload, context?: string, stack?: string) {
-    let msg = payload, data:string;
-    if (typeof payload == 'object') {
-      msg = payload.message;
-      if(payload.data) data = payload.data;
-      if(payload.context) context = payload.context;
-      if(payload.stack) stack = payload.stack;
+  warn(payload: LogPayload, context?:string) {
+    let message:any = payload, data:any, stack: string;
+    if(typeof payload == "object"){
+      context = payload.context ? payload.context : this.context;
+      stack = payload.stack ? payload.stack : stack;
+      message = payload.message && typeof payload.message == 'string' ? payload.message : 'Warning';
+      data = payload instanceof Error || !payload.message || typeof payload.message != 'string' ? payload : payload.data;
     }
-
+    
     this.wLogger.warn({
       context: context ?? this.context,
-      message: msg,
+      message,
       data,
       stack,
     });
   }
 
-  /**
-   * Write a 'debug' level log.
-   */
-  debug?(payload: LogPayload, context?: string, stack?: string) {
-    let msg = payload, data:string;
-    if (typeof payload == 'object') {
-      msg = payload.message;
-      if(payload.data) data = payload.data;
-      if(payload.context) context = payload.context;
-      if(payload.stack) stack = payload.stack;
+  debug(payload: LogPayload, context?:string) {
+    let message:any = payload, data:any, stack: string;
+    if(typeof payload == "object"){
+      context = payload.context ? payload.context : this.context;
+      stack = payload.stack ? payload.stack : stack;
+      message = payload.message && typeof payload.message == 'string' ? payload.message : 'Warning';
+      data = payload instanceof Error || !payload.message || typeof payload.message != 'string' ? payload : payload.data;
     }
-
-    this.wLogger.debug({
+    
+    this.wLogger.warn({
       context: context ?? this.context,
-      message: msg,
+      message,
       data,
       stack,
     });
   }
 
-  /**
-   * Write a 'verbose' level log.
-   */
-  verbose?(payload: LogPayload, context?: string, stack?: string) {
-    let msg = payload, data:string;
-    if (typeof payload == 'object') {
-      msg = payload.message;
-      if(payload.data) data = payload.data;
-      if(payload.context) context = payload.context;
-      if(payload.stack) stack = payload.stack;
+  verbose(payload: LogPayload, context?:string) {
+    let message:any = payload, data:any, stack: string;
+    if(typeof payload == "object"){
+      context = payload.context ? payload.context : this.context;
+      stack = payload.stack ? payload.stack : stack;
+      message = payload.message && typeof payload.message == 'string' ? payload.message : 'Warning';
+      data = payload instanceof Error || !payload.message || typeof payload.message != 'string' ? payload : payload.data;
     }
-
+    
     this.wLogger.verbose({
       context: context ?? this.context,
-      message: msg,
+      message,
       data,
       stack,
     });
