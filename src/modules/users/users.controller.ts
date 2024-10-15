@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { UpdateuserDto } from './dtos/update-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from 'src/models/users/entities/users.entity';
+import { User } from 'src/modules/users/entities/users.entity';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
@@ -34,8 +34,8 @@ export class UsersController {
   @UseGuards(AuthGuard)
   async getUsers(@CurrentUser() user: any) {
     this.logger.log({
-      message: "The current user is\n",
-      data: user
+      message: 'The current user is\n',
+      data: user,
     });
     return await this.usersService.getUsers();
   }

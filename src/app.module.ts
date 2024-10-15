@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MyTypeOrmModule } from './providers/typeorm/my-typeorm.module';
-import { UsersModule } from './models/users/users.module';
+import { UsersModule } from 'src/modules/users/users.module';
 import { QueueModule } from './providers/queue/queue.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';

@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateuserDto } from './dtos/update-user.dto';
 import { QueueService } from 'src/providers/queue/lib/queue.service';
-import { User } from 'src/models/users/entities/users.entity';
+import { User } from 'src/modules/users/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
