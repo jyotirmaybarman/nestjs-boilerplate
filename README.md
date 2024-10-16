@@ -28,7 +28,7 @@
 
 - Postgres DB
 - TypeORM (structured migrations & entities [see usage](#typeorm-usage))
-- Queue (Custom queue implementation [see usage](#queue-usage))
+- Queue (Custom seamless queue implementation [see usage](#queue-usage))
 - Caching
 - Swagger for documentation
 - Custom environment variables handling with multiple files & validation using Zod ( ie. simplified `Testing` )
@@ -74,23 +74,14 @@ npm run migration:undo
 
 #### QUEUE
 
-Add the type definition for the payload of the new job in `src/providers/queue/payload-types`
-
-```ts
-// new-job.type.ts
-
-export type NewJobPayload = {
-  message: string;
-};
-```
-
-Add the new job to `src/providers/queue/queue.jobs.ts`
+Add a new job with the `@Job()` decorator & add processing logic to `src/providers/queue/queue.jobs.ts` with proper type definitions.
 
 ```ts
 export class QueueJobs {
   /** Other Code */
 
-  async newJob(payload: NewJobPayload): Promise<boolean> {
+  @Job()
+  async newJob(payload: { message: string }): Promise<boolean> {
     /** code related to processing of the job */
     return true;
   }
@@ -99,18 +90,7 @@ export class QueueJobs {
 }
 ```
 
-Map the payload in `src/providers/queue/job-payload-type-mapper.ts` in the following format -
-
-`the_added_job_name_in_QueueJobs: payload_type`
-
-```ts
-export type JobPayloadTypeMapper = {
-  /** [job-name-from QueueJobs]: payload-type*/
-  newJob: NewJobPayload;
-};
-```
-
-Now, using QueueService, just add the job & processing will be handled automatically.
+Now using QueueService, just add the job & processing will be handled automatically.
 
 ```ts
 Class AnyService{

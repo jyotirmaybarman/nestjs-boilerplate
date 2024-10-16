@@ -39,8 +39,7 @@ export class UsersService {
     this.queueService.addJob({
       task: 'doSomething',
       payload: {
-        user_id: 'userid',
-        count: 2,
+        message: "my message"
       },
     });
     const users = await this.userRepository.find();

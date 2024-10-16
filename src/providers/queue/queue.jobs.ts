@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { DoSomethingPayload } from './payload-types/do-something-job.type';
 import { env } from 'src/utils/env';
 import { WinstonLogger } from 'src/utils/winston-logger/winston-logger';
+import { Job } from './lib/job.decorator';
 
 @Injectable()
 export class QueueJobs {
   private logger = new WinstonLogger(QueueJobs.name);
   constructor(){}
   
-  async doSomething(data: DoSomethingPayload){
+  @Job()
+  async doSomething(data: { message: string }){
     this.logger.log(`Database Type: ${env.DB_TYPE}`, );
     this.logger.log({
       message: "Logging the paylod",
